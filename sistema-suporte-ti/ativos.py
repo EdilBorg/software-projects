@@ -1,11 +1,15 @@
 import utilis
-def adicionar_ativos(banco, patrimonio, tipo, marca, modelo, numero_serie, estado):
-    data = utilis.data_atual()
-    banco.cursor.execute("""
-        INSERT INT ativos(patrimonio, tipo, marca, modelo, numero_serie, estado, data)
-        VALUES(%s, %s, %s, %s, %s, %s, %s)
-    """,(patrimonio, tipo, marca, modelo, numero_serie, estado, data))
-    return True
+def adicionar_ativos(banco, patrimonio, tipo, marca, modelo, numero_serie, estado, mysql):
+    try:
+        data = utilis.data_atual()
+        banco.cursor.execute("""
+            INSERT INT ativos(patrimonio, tipo, marca, modelo, numero_serie, estado, data)
+            VALUES(%s, %s, %s, %s, %s, %s, %s)
+        """,(patrimonio, tipo, marca, modelo, numero_serie, estado, data))
+        banco.conexao.commit()
+        return True
+    except mysql.connector.errors.IntegrityError:
+        return "Erro ja existe esse item\n"
 
 def editar_ativos(banco, marca, modelo, dado_editar, novo_dado):
     dado_editar_permitido = {"patrimonio", "tipo", "marca", "modelo", "numero_serie", " estado"}

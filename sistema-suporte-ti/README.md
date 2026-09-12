@@ -234,6 +234,6 @@ O projeto está sendo desenvolvido por etapas e novas funcionalidades serão adi
 
 ## Autor
 
-**Edil Borges**
+**Edil Borge**
 
 Projeto desenvolvido para fins de estudo, prática e portfólio.

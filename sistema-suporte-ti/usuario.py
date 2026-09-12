@@ -1,14 +1,14 @@
-def adicionar_usuarios(banco, nome, email, tipo):
-        try:
+def adicionar_usuarios(banco, nome, email, tipo, mysql):
+       try:
             banco.cursor.execute("""
                 INSERT INTO usuarios(nome, email, tipo, estado)
                 VALUES(%s,%s,%s, %s);
             """, (nome.upper(), email, tipo, True))
             banco.conexao.commit()
             return  True
-        except Exception as erro:
+       except mysql.connector.errors.IntegrityError:
             banco.conexao.rollback()
-            return False
+            return "Nao foi possivel cadastrar, ja existe usuario com esse gmail\n"
 
 def remover_usuarios(banco, nome, email):
         banco.cursor.execute("""
@@ -50,7 +50,7 @@ def tipo_usuario(utilis):
 def entrada_dado_usuario(utilis):
       usuario = {}
       usuario['nome'] = input("Nome: ")
-      usuario['email'] = input("E-mail: ")
+      usuario['email'] = input("Gmail: ")
       tipo = tipo_usuario(utilis)
       usuario['tipo'] = tipo
       return usuario
@@ -64,3 +64,20 @@ def validar_estado(banco, email):
        banco.cursor.execute("SELECT estado FROM usuarios WHERE email = %s", (email, ))
        estado_encontrado = banco.cursor.fetchone()
        return estado_encontrado
+
+def pesquisar_usuarios(banco, tipo_pesquisa, pesquisa):
+      tipo_pesquisas_permitidas = {'id', 'nome', 'email'}
+      if tipo_pesquisa not in tipo_pesquisas_permitidas:
+            return False
+      banco.cursor.execute(f"SELECT * FROM usuarios WHERE {tipo_pesquisa} = %s", (pesquisa, ))
+      resultado_encontrado = banco.cursor.fetchall()
+      return resultado_encontrado
+
+def estado_usuario(banco, usuario, email):
+    saida_estado = usuario.validar_estado(banco, email)
+    return saida_estado
+
+def gestao_usuarios(utilis):
+    opcoes_usuario = ["Cadastrar", "Listar", "Pesquisar", "Editar", "Desativar/Ativar", "Eliminar", "Voltar"]
+    utilis.mostrar_dados_lista_enumerado(opcoes_usuario)
+    return len(opcoes_usuario)

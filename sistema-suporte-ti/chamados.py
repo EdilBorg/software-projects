@@ -1,4 +1,7 @@
+import os
 def estado_chamados(utilis):
+    os.system("clear")
+    print("Estados\n".center(40))
     estados = ["Aberto", "Em Atendimento", "Aguardando", "Resolvido", "Fechado",
                "Cancelado"]
     utilis.mostrar_dados_lista_enumerado(estados)
@@ -6,6 +9,8 @@ def estado_chamados(utilis):
     return estados[escolha_estado]
 
 def prioridades_chamados(utilis):
+    os.system("clear")
+    print("Prioridade\n".center(40))
     prioridades = ["Baixa", "Normal", "Critica", "Alta".title()]
     utilis.mostrar_dados_lista_enumerado(prioridades)
     escolha_prioridade = utilis.validar_entrada("Escolha uma opcao: ", len(prioridades))-1
@@ -27,7 +32,7 @@ def levar_id(banco, categoria_id, email):
 
 def adicionar_chamados(banco, titulo, prioridade, estado, tipo_problema, email_usuario):
     try:
-        id_categoria = levar_id(banco, tipo_problema, "")
+        id_categoria = levar_id(banco, tipo_problema.title(), "")
         id_usuario = levar_id(banco, "", email_usuario)
         banco.cursor.execute("""
             INSERT INTO chamados(titulo, usuario_id, categoria_id, prioridade, estado)
@@ -58,8 +63,8 @@ def eliminar_chamados(banco, titulo, email):
 
 def mostar_todos_chamados(banco):
     banco.cursor.execute("""
-        SELECT usuarios.nome, chamados.titulo, categorias.nome,
-        chamados.prioridade, chamados.estado
+        SELECT chamados.titulo, categorias.nome,
+        chamados.prioridade, chamados.estado, usuarios.nome
         FROM usuarios
         JOIN chamados
         ON usuarios.id = chamados.usuario_id
@@ -68,3 +73,16 @@ def mostar_todos_chamados(banco):
     """)
     dados_encontrados = banco.cursor.fetchall()
     return dados_encontrados
+
+def gestao_chamados(utilis):
+    chamados = ["Criar", "Mostrar todos chamados", "Consultar fila", "Alterar prioridade", "Resolver"]
+    utilis.mostrar_dados_lista_enumerado(chamados)
+    return len(chamados)
+
+def entrada_dado_chamados(usuario_ativo, utilis):
+    chamados = {}
+    chamados['titulo'] = input("Titulo: ")
+    chamados['categoria'] = input("Categoria: ").title()
+    chamados['prioridade'] = prioridades_chamados(utilis)
+    chamados['estado'] = estado_chamados(utilis)
+    return chamados

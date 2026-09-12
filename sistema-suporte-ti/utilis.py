@@ -1,5 +1,11 @@
 import os
 import datetime
+import utilis
+
+def mensagem_tela():
+    os.system("clear")
+    mensagem_tela = "NEXORA SISTEMA DE SUPORTE TI\n".center(40)
+    print(mensagem_tela)
 
 def data_atual():
     data = datetime.datetime.now().date()
@@ -18,7 +24,7 @@ def validar_entrada(mensagem, limite_entrada):
                 return op
             else:
                 if op > limite_entrada or op < 0:
-                    print("opcao invalida")
+                    print("opcao invalida\n")
                     continue
                 else:
                     return op
@@ -31,36 +37,28 @@ def mostrar_dados_lista_enumerado(dados):
     for n, item in enumerate(dados, start=1):
         print(f"[{n}]-{item}")
 
+#inacabado
 def mostar_dado_banco(dados):
-    for item in dados:
-        for n in item:
-            print(n, end=" ")
-        print()
-    input("\n[FECHAR]\nDigite qualquel tecla")
-    os.system("clear")
+    #estados_usuario = ["Id", "Nome", "G-mail", "Estado"]
+    if dados:
+        for item in dados:
+            for conteudo in item:
+                print(conteudo, end=" ")
+            print()
+        input("\n[FECHAR]\nDigite qualquel tecla")
+    else:
+        print("Nenhum resultado encontrado\n")
+    mensagem_tela()
     
 
-def gestao_usuarios():
-    opcoes_usuario = ["Cadastrar", "Listar", "Pesquisar", "Editar", "Desativar/Ativar", "Eliminar", "Voltar"]
-    mostrar_dados_lista_enumerado(opcoes_usuario)
-    return len(opcoes_usuario)
-
-def gestao_categorias():
-    categorias = ["Criar categorias", "Listar", "pesquisar", "editar categoria", "Desativar categoria", "Voltar"]
-    mostrar_dados_lista_enumerado(categorias)
-    return len(categorias)
-
-def gestao_chamados():
-    chamados = ["Criar", "Consultar fila", "Alterar prioridade", "Resolver"]
-    mostrar_dados_lista_enumerado(chamados)
-    return len(chamados)
-
 def confirmacao(dado, mensagem):
-    os.system("clear")
-    if dado:
+    mensagem_tela()
+    if type(dado) == str:
+        print(dado)
+    elif dado:
         print(f"{mensagem}!\n")
     else:
-        print("Invalido")
+        print("Invalido\n")
 
 
 def login(banco, usuario):
@@ -76,6 +74,32 @@ def login(banco, usuario):
             print("usuario invalido")
             continue
 
-def estado_usuario(banco, usuario, email):
-    saida_estado = usuario.validar_estado(banco, email)
-    return saida_estado
+
+def primeiro_login(dado):
+    if not dado:
+        mensagem_tela()
+        print("""
+            ==================================================
+                            PRIMEIRO ACESSO
+            ==================================================
+              
+              Esta é a conta administrativa inicial do sistema.
+
+                Por segurança, recomendamos que altere os
+                dados desta conta antes de continuar.
+
+                Para alterar os dados:
+
+                1. Acesse "Gestão de usuários"
+                2. Escolha "Editar usuário"
+                3. Selecione a conta  admin@gmail.com
+                4. Altere os dados necessários
+
+                Após realizar a alteração, continue utilizando
+                o sistema normalmente.
+
+                ==================================================
+
+                Pressione ENTER para continuar...
+        """)
+        input()

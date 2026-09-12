@@ -11,9 +11,17 @@ class Banco_mysql:
         password = os.getenv("MYSQL_PASSWORD")
         )
         self.cursor = self.conexao.cursor()
-        self.cursor.execute("CREATE DATABASE IF NOT EXISTS BANCO_NEXORA_IT;")
+
+    def criar_banco_dado(self):
+        estado = None   
+        try:
+            self.cursor.execute("CREATE DATABASE BANCO_NEXORA_IT;")
+            self.cursor.execute("USE BANCO_NEXORA_IT;")
+            estado = False
+        except mysql.connector.errors.DatabaseError:
+            estado = True
         self.cursor.execute("USE BANCO_NEXORA_IT;")
-    
+        return estado
     
     def criar_tabela(self):
         self.cursor.execute("""
