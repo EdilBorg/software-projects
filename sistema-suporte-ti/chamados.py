@@ -44,13 +44,15 @@ def adicionar_chamados(banco, titulo, prioridade, estado, tipo_problema, email_u
         banco.conexao.rollback()
         return False
 
-def editar_chamados(banco, dado_editar, coluna, id):
+def editar_chamados(banco, dado_editar, coluna, titulo, categoria, usuario):
     coluna_permitidos = {"titulo", "prioridade", "estado"}
+    id_usuario = levar_id(banco, "", usuario)
+    id_categoria = levar_id(banco, categoria.title(), "")
     if coluna  not in coluna_permitidos:
         return False
     banco.cursor.execute(f"""
-        UPDATE chamados SET {coluna} = %s WHERE id = %s ;
-    """, (dado_editar, id))
+        UPDATE chamados SET {coluna} = %s, usuario_id = %s WHERE titulo = %s AND categoria_id = %s;
+    """, (dado_editar, id_usuario, titulo, id_categoria))
     banco.conexao.commit()
     return True
 
@@ -75,7 +77,7 @@ def mostar_todos_chamados(banco):
     return dados_encontrados
 
 def gestao_chamados(utilis):
-    chamados = ["Criar", "Mostrar todos chamados", "Consultar fila", "Alterar prioridade", "Resolver"]
+    chamados = ["Criar", "Mostrar todos chamados", "Alterar prioridade", "Resolver", "Sair"]
     utilis.mostrar_dados_lista_enumerado(chamados)
     return len(chamados)
 

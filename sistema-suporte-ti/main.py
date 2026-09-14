@@ -161,7 +161,7 @@ def menu(banco, email_usuario):
                 continue
             os.system("clear")
             print("Gestão de chamados\n".center(40))
-            limite_opcao = chamados.gestao_chamados(utilis)
+            limite_opcao = chamados.gestao_chamados(utilis) 
             op = utilis.validar_entrada("Escolha uma opcão valida: ", limite_opcao)
             os.system("clear")
 
@@ -173,6 +173,22 @@ def menu(banco, email_usuario):
             elif op == 2:
                 dados_encontrados = chamados.mostar_todos_chamados(banco)
                 utilis.mostar_dado_banco(dados_encontrados)
+
+            elif op == 3:
+                nova_prioridade = chamados.prioridades_chamados(utilis)
+                titulo = input("Titulo do chamado: ")
+                categoria = input("Categoria: ")
+                saida = chamados.editar_chamados(banco, nova_prioridade, "prioridade", titulo, categoria, email_usuario)
+                utilis.confirmacao(saida, "Prioridade alterado com sucesso")
+                
+            elif op == 4:
+                estado = "Resolvido"
+                titulo = input("Titulo: ")
+                categoria = input("Categoria: ")
+                saida = chamados.editar_chamados(banco, estado, "estado", titulo, categoria, email_usuario)
+                utilis.confirmacao(saida, "Resolvido com sucesso")
+            elif op == 5:
+                continue
             
            
 utilis.primeiro_login(estado)
