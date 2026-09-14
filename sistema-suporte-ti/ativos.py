@@ -32,3 +32,8 @@ def mostrar_ativos(banco):
     banco.cursor.execute("SELECT * FROM ativos")
     ativos_encontrados = banco.cursor.fetchall()
     return ativos_encontrados
+
+def gestao_ativos(utilis):
+    ativo = ["Cadastrar", "Listar", "Pesquisar", "Editar", "Alterar estado"]
+    utilis.mostrar_dados_lista_enumerado(ativo)
+    return len(ativo)

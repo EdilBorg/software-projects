@@ -8,7 +8,7 @@ import ativos
 import mysql
 Banco_dado = Banco.Banco_mysql()
 estado = Banco_dado.criar_banco_dado()
-#Banco_dado.criar_tabela()
+Banco_dado.criar_tabela()
 
 
 def menu(banco, email_usuario):
@@ -42,12 +42,13 @@ def menu(banco, email_usuario):
                 utilis.confirmacao(confir, "Usuario cadastrado com sucesso")
 
             elif op == 2:
+                nome_coluna_usuario = ["Id", "Nome", "G-mail", "Tipo", "Estado"]
                 print("Usuários Encontrados\n".center(40))
                 todos_usuarios = usuario.mostrar_usuarios(banco, "*")
                 if not todos_usuarios:
                     print("Nenhum usuario encontrado\n")
                     continue
-                utilis.mostar_dado_banco(todos_usuarios)
+                utilis.mostar_dado_banco(todos_usuarios, nome_coluna_usuario)
             
             elif op == 3:
                 print("Pesquisa\n".center(40))
@@ -122,7 +123,7 @@ def menu(banco, email_usuario):
 
             elif op == 2:
                 categorias_encontrados = categorias.mostrar_categorias(banco)
-                utilis.mostar_dado_banco(categorias_encontrados)
+                utilis.mostar_dado_banco(categorias_encontrados, [":"])
 
             elif op == 3:
                 print("Editar Categoria\n".center(40))
@@ -170,9 +171,11 @@ def menu(banco, email_usuario):
                 saida = chamados.adicionar_chamados(banco, dado['titulo'], dado['prioridade'],
                                                     dado['estado'], dado['categoria'], email_usuario)
                 utilis.confirmacao(saida, "Cadastrado com sucesso")
+
             elif op == 2:
+                nome_coluna_chamados = ["Titulo", "Categoria", "Prioridade", "Estado", "Usuarios"]
                 dados_encontrados = chamados.mostar_todos_chamados(banco)
-                utilis.mostar_dado_banco(dados_encontrados)
+                utilis.mostar_dado_banco(dados_encontrados, nome_coluna_chamados)
 
             elif op == 3:
                 nova_prioridade = chamados.prioridades_chamados(utilis)
@@ -190,7 +193,12 @@ def menu(banco, email_usuario):
             elif op == 5:
                 continue
             
-           
+
+#========================================== ATIVOS ======================================================
+        elif opcao == 4:
+            print()
+
+
 utilis.primeiro_login(estado)
 #email = utilis.login(Banco_dado, usuario)
-menu(Banco_dado, 'borgesedil488@gmail.com')
+menu(Banco_dado, 'admin@gmail.com')

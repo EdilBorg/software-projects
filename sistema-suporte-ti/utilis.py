@@ -38,12 +38,11 @@ def mostrar_dados_lista_enumerado(dados):
         print(f"[{n}]-{item}")
 
 #inacabado
-def mostar_dado_banco(dados):
-    #estados_usuario = ["Id", "Nome", "G-mail", "Estado"]
+def mostar_dado_banco(dados, titulos):
     if dados:
         for item in dados:
-            for conteudo in item:
-                print(conteudo, end=" ")
+            for posicao, conteudo in zip(item, titulos):
+                print(f"{conteudo}: {posicao}")
             print()
         input("\n[FECHAR]\nDigite qualquel tecla")
     else:
@@ -103,3 +102,4 @@ def primeiro_login(dado):
                 Pressione ENTER para continuar...
         """)
         input()
+

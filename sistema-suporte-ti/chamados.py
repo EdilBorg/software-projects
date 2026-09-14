@@ -37,7 +37,7 @@ def adicionar_chamados(banco, titulo, prioridade, estado, tipo_problema, email_u
         banco.cursor.execute("""
             INSERT INTO chamados(titulo, usuario_id, categoria_id, prioridade, estado)
             VALUES(%s, %s, %s, %s, %s);
-        """, (titulo, id_usuario, id_categoria, prioridade, estado))
+        """, (titulo.title(), id_usuario, id_categoria, prioridade, estado))
         banco.conexao.commit()
         return True
     except:
@@ -52,14 +52,14 @@ def editar_chamados(banco, dado_editar, coluna, titulo, categoria, usuario):
         return False
     banco.cursor.execute(f"""
         UPDATE chamados SET {coluna} = %s, usuario_id = %s WHERE titulo = %s AND categoria_id = %s;
-    """, (dado_editar, id_usuario, titulo, id_categoria))
+    """, (dado_editar, id_usuario, titulo.title(), id_categoria))
     banco.conexao.commit()
     return True
 
 def eliminar_chamados(banco, titulo, email):
     email_id = levar_id(banco, "", email)
     banco.cursor.execute("DELETE FROM chamados WHERE titulo = %s AND usuario_id = %s;",
-                         (titulo, email_id))
+                         (titulo.title(), email_id))
     banco.conexao.commit()
     return True
 
